@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS = "ONTRACT_ADDRESS";
+export const CONTRACT_ADDRESS = "CONTRACT_ADDRESS";
 export const abi = [
   {
     inputs: [

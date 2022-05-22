@@ -83,7 +83,7 @@ function Navbar(props) {
         {/* <Link href="/"> */}
         <a className="flex mr-auto hover:bg-[#dbd5d533] ease-in transition duration-700 px-2 py-1 border-0 rounded-xl">
           <div className="font-inter font-semibold text-[26px] text-black">
-            MeTag
+            Hybridz
           </div>
         </a>
         {/* </Link> */}

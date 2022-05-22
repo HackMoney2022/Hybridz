@@ -3,31 +3,46 @@ import Image from "next/image";
 import Navbar from "../components/Navbar";
 import styles from "../styles/Home.module.css";
 import { CONTRACT_ADDRESS, abi } from "../constants";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Web3Modal from "web3modal";
-import { providers } from "ethers";
+import { ethers, providers, utils } from "ethers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+import Form from "../components/Form";
+import { Box } from "@chakra-ui/react";
 
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
   const [connectedAddress, setConnectedAddress] = useState();
   const [loading, setLoading] = useState(false);
-  // const web3ModalRef = useRef();
+  const [sentiment, setSentiment] = useState(0);
+  const [balance, setBalance] = useState(0);
+
+  const getSentiment = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/sentiment/eth");
+      const data = await response.json();
+      setSentiment(data);
+      console.log(sentiment);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSentiment();
+  }, [walletConnected]);
 
   const getProviderOrSigner = async (needSigner = false) => {
-    // Connect to Metamask
-    // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying object
-
     const providerOptions = {
       coinbasewallet: {
-        package: CoinbaseWalletSDK, // Required
+        package: CoinbaseWalletSDK,
         options: {
-          appName: "My Awesome App", // Required
-          infuraId: "INFURA_ID", // Required
-          rpc: "", // Optional if `infuraId` is provided; otherwise it's required
-          chainId: 1, // Optional. It defaults to 1 if not provided
-          darkMode: false, // Optional. Use dark theme, defaults to false
+          appName: "Hybridz",
+          infuraId: "INFURA_ID", // Will add later
+          rpc: "",
+          chainId: 1,
+          darkMode: false,
         },
       },
       walletconnect: {
@@ -45,7 +60,7 @@ export default function Home() {
     const provider = await web3Modal.connect();
     const web3Provider = new providers.Web3Provider(provider);
 
-    // If user is not connected to the Ropston network, let them know and throw an error
+    // If user is not connected to the Ropsten network, let them know and throw an error
     const { chainId } = await web3Provider.getNetwork();
     if (chainId !== 3) {
       window.alert("Change the network to Ropsten");
@@ -91,6 +106,7 @@ export default function Home() {
       setWalletConnected(true);
       console.log(walletConnected);
       await getConnectedWallet();
+      await getSentiment();
     } catch (err) {
       console.error(err);
     }
@@ -101,8 +117,11 @@ export default function Home() {
       const signer = await getProviderOrSigner(true);
       if (signer) {
         const addr = await signer.getAddress();
+        const bal = await signer.getBalance();
+        const ethbal = ethers.utils.formatEther(bal);
         setConnectedAddress(addr);
-        console.log(addr);
+        setBalance(ethbal);
+        console.log(addr, balance);
       }
     } catch (err) {
       console.error(err);
@@ -112,6 +131,12 @@ export default function Home() {
   return (
     <>
       <Navbar connectWallet={connectWallet} />
+      <Form
+        sentiment={sentiment}
+        connectWallet={connectWallet}
+        connectedAddress={connectedAddress}
+        balance={balance}
+      />
     </>
   );
 }
