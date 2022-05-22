@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 // import WalletConnect from "@walletconnect/web3-provider";
 // import { ethers } from 'ethers';
 
-function Navbar(props) {
+function Navbar({ connectWallet, connectedAddress }) {
   const [hideNav, setHideNav] = useState(true);
   const [screenWidth, setScreenWidth] = useState();
   //   const [provider, setProvider] = useState();
@@ -92,18 +92,18 @@ function Navbar(props) {
       <div className="absolute space-x-8">
         {/* <div className=" left-auto flex items-center"> */}
         {/* <Link href="/about"> */}
-        <a className="nav-link">Stake</a>
+        {/* <a className="nav-link">Stake</a> */}
         {/* </Link> */}
         {/* <Link href="/events"> */}
-        <a className="nav-link">Wrap</a>
+        {/* <a className="nav-link">Wrap</a> */}
         {/* </Link> */}
         {/* // <Link href="/contact"> */}
-        <a className="nav-link">Reward</a>
+        {/* <a className="nav-link">Reward</a> */}
         {/* </Link> */}
       </div>
       <div className="items-end flex flex-row space-x-3">
-        <button onClick={props.connectWallet} className="tetiary-1">
-          Connect Wallet
+        <button onClick={connectWallet} className="tetiary-1">
+          {connectedAddress ? connectedAddress : "Connect Wallet"}
         </button>
       </div>
     </header>

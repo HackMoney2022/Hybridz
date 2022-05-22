@@ -130,7 +130,10 @@ export default function Home() {
 
   return (
     <>
-      <Navbar connectWallet={connectWallet} />
+      <Navbar
+        connectWallet={connectWallet}
+        connectedAddress={connectedAddress}
+      />
       <Form
         sentiment={sentiment}
         connectWallet={connectWallet}

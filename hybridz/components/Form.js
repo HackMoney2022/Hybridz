@@ -1,15 +1,15 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Input } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
 
 const Form = ({ sentiment, connectedAddress, connectWallet, balance }) => {
   return (
     <div>
       {" "}
       <div className="flex flex-col justify-center items-center  mt-[69px] mb-[273px]">
-        <h1>Short Ether</h1>
+        <Heading>Short ETH</Heading>
         <h4>Stake ETH and receive hETH while shorting.</h4>
-        <h4>Connected Address: {connectedAddress}</h4>
         <div className="box-border border-solid border-gradient-1 border-2 rounded-[20px] px-10 pt-12 fill-slate-700">
           <div className="flex flex-col justify-center items-center">
             <Input placeholder="Amount (in ETH)" />
