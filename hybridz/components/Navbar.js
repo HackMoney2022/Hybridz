@@ -76,6 +76,7 @@ function Navbar({ connectWallet, connectedAddress }) {
   //       console.error(error);
   //     }
   //   };
+  console.log(connectedAddress);
 
   return (
     <header className="flex flex-wrap justify-center items-center sticky top-0 bg-transparent backdrop-blur-lg z-[99] transition duration-200 py-0.5 px-16">
