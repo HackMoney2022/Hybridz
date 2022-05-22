@@ -6,6 +6,8 @@ import { CONTRACT_ADDRESS, abi } from "../constants";
 import { useState } from "react";
 import Web3Modal from "web3modal";
 import { providers } from "ethers";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
@@ -16,9 +18,28 @@ export default function Home() {
   const getProviderOrSigner = async (needSigner = false) => {
     // Connect to Metamask
     // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying object
+
+    const providerOptions = {
+      coinbasewallet: {
+        package: CoinbaseWalletSDK, // Required
+        options: {
+          appName: "My Awesome App", // Required
+          infuraId: "INFURA_ID", // Required
+          rpc: "", // Optional if `infuraId` is provided; otherwise it's required
+          chainId: 1, // Optional. It defaults to 1 if not provided
+          darkMode: false, // Optional. Use dark theme, defaults to false
+        },
+      },
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          infuraId: "INFURA_ID",
+        },
+      },
+    };
     const web3Modal = new Web3Modal({
       network: "ropsten",
-      providerOptions: {},
+      providerOptions,
       disableInjectedProvider: false,
     });
     const provider = await web3Modal.connect();
